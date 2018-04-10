@@ -1,0 +1,293 @@
+<!DOCTYPE html><html><head><title>第一章 通过create-react-app新建react项目</title><meta charset='utf-8'><link href='https://dn-maxiang.qbox.me/res-min/themes/marxico.css' rel='stylesheet'><style></style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+<h1 id="第一章-通过create-react-app新建react项目">第一章 通过create-react-app新建react项目</h1>
+
+<p><strong>首先，要确认已经安装了nodejs和npm</strong></p>
+
+<h4 id="1设置开发环境"><strong>1.设置开发环境</strong></h4>
+
+<pre class="prettyprint hljs-dark"><code class="hljs dsconfig"><div class="hljs-line">  <span class="hljs-string">npm </span><span class="hljs-string">install </span><span class="hljs-built_in">--global</span> <span class="hljs-built_in">create-react-app</span>  
+</div><div class="hljs-line">  全局安装<span class="hljs-built_in">create-react-app工具</span>
+</div></code></pre>
+
+
+
+<h4 id="2创建新项目"><strong>2.创建新项目</strong></h4>
+
+<pre class="prettyprint hljs-dark"><code class="hljs dsconfig"><div class="hljs-line"> <span class="hljs-built_in">create-react-app</span> 项目名称
+</div></code></pre>
+
+
+
+<h4 id="3启动服务器"><strong>3.启动服务器</strong></h4>
+
+<pre class="prettyprint hljs-dark"><code class="hljs dockerfile"><div class="hljs-line">在当前项目下打开终端（<span class="hljs-keyword">cmd</span><span class="bash">命令窗口）
+</span></div><div class="hljs-line">npm start 启动项目（在package.json 中 scripts 里查看）
+</div><div class="hljs-line">**与 vue 相同的是，react 也同样会热加载，即浏览器会自动刷新
+</div></code></pre>
+
+
+
+<h4 id="4分析文件结构及代码"><strong>4.分析文件结构及代码</strong></h4>
+
+<p><strong>4.1分析create-react-app给我们自动产生的代码</strong></p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs stylus"><div class="hljs-line">  项目目录下包含如下文件夹：src public README<span class="hljs-selector-class">.md</span> package<span class="hljs-selector-class">.json</span> node_modules
+</div><div class="hljs-line">  在开发过程中，我们要关注的 src 目录中的内容，这个目录中是所有的源代码
+</div></code></pre>
+
+<p><strong>4.2入口文件 src/index.js 文件，代码如下：</strong></p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs typescript"><div class="hljs-line">    <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>; <span class="hljs-comment">//核心库</span>
+</div><div class="hljs-line">    <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;<span class="hljs-comment">//React的Dom适配库</span>
+</div><div class="hljs-line">    <span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">'./App'</span>; <span class="hljs-comment">//组件</span>
+</div><div class="hljs-line">    <span class="hljs-keyword">import</span> <span class="hljs-string">'./index.css'</span>; <span class="hljs-comment">//css样式</span>
+</div><div class="hljs-line">    ReactDOM.render(
+</div><div class="hljs-line">        &lt;App /&gt;,
+</div><div class="hljs-line">        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'root'</span>)  <span class="hljs-comment">//public/index.html</span>
+</div><div class="hljs-line">    ); <span class="hljs-comment">// 注册组件（实例挂载）</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//这个应用所做的事情，只是渲染一个名字叫做App的组件，App组件在同目录下的App.js文件中定义</span>
+</div></code></pre>
+
+
+
+<h4 id="5增加一个新的react组件"><strong>5.增加一个新的React组件</strong></h4>
+
+<pre class="prettyprint hljs-dark"><code class="hljs"><div class="hljs-line">   功能：定义一个能够点击计算增加减少数的组件
+</div></code></pre>
+
+<p>在src目录下增加一个Click Counter.js，代码如下：</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs kotlin"><div class="hljs-line"><span class="hljs-keyword">import</span> React,{Component} from <span class="hljs-string">'react'</span>;  <span class="hljs-comment">//导入react组件</span>
+</div><div class="hljs-line"><span class="hljs-comment">//ES6语法  定义一个继承React的Click Counter类</span>
+</div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ClickCounter</span> <span class="hljs-title">extends</span> <span class="hljs-title">Component</span></span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">constructor</span>(props){  <span class="hljs-comment">//构造函数</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">super</span>(props); <span class="hljs-comment">//接受父组件的值，调用父类</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.onClickadd = <span class="hljs-keyword">this</span>.onClickadd.bind(<span class="hljs-keyword">this</span>);  <span class="hljs-comment">//定义事件 加一</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.onClickReduce = <span class="hljs-keyword">this</span>.onClickReduce.bind(<span class="hljs-keyword">this</span>); <span class="hljs-comment">// 减一</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.state ={count : <span class="hljs-number">0</span>}; <span class="hljs-comment">//给定初始值</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    onClickadd(){
+</div><div class="hljs-line">        <span class="hljs-comment">//加一函数</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.setState({count : <span class="hljs-keyword">this</span>.state.count+<span class="hljs-number">1</span>});
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    onClickReduce(){
+</div><div class="hljs-line">        <span class="hljs-comment">//减一函数</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.setState({count : <span class="hljs-keyword">this</span>.state.count<span class="hljs-number">-1</span>});
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    render(){   <span class="hljs-comment">//render函数是最主要的，渲染页面 只能有一个根元素 同vue</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">            &lt;div&gt;
+</div><div class="hljs-line">                &lt;button onClick = {<span class="hljs-keyword">this</span>.onClickadd}&gt;+&lt;/button&gt;
+</div><div class="hljs-line">                &lt;button onClick = {<span class="hljs-keyword">this</span>.onClickReduce}&gt;-&lt;/button&gt;
+</div><div class="hljs-line">                &lt;div&gt;
+</div><div class="hljs-line">                    Click Count : {<span class="hljs-keyword">this</span>.state.count}
+</div><div class="hljs-line">                &lt;/div&gt;
+</div><div class="hljs-line">            &lt;/div&gt;
+</div><div class="hljs-line">        );
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> ClickCounter;  <span class="hljs-comment">//默认抛出组件</span>
+</div></code></pre>
+
+<p>在src目录的index.js文件中注册，代码如下：</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs coffeescript"><div class="hljs-line"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-string">'./index.css'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> ClickCounter <span class="hljs-keyword">from</span> <span class="hljs-string">'./ClickCounter'</span>
+</div><div class="hljs-line">ReactDOM.render(&lt;ClickCounter /&gt;, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'root'</span>));
+</div></code></pre>
+
+
+
+<h4 id="6组件之间的传值"><strong>6.组件之间的传值</strong></h4>
+
+<p><strong>6.1 父传子</strong>（用props接收）</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs"><div class="hljs-line">功能：点击任何一个Counter的 + 或者 - 按钮 ，实现对应的Counter的计数变化
+</div></code></pre>
+
+<p>在src目录下创建父组件CounterPanel.js，代码如下：</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs scala"><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">React</span> , {<span class="hljs-type">Component</span>} from <span class="hljs-string">"react"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">Counter</span> from <span class="hljs-string">"./Counter"</span> <span class="hljs-comment">//引入子组件</span>
+</div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CounterPanel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span></span>{
+</div><div class="hljs-line">    render(){
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">        <span class="hljs-comment">//变量说明 caption 标题传给子组件的值   initValue 初始值  step 步长（决定加减多少）</span>
+</div><div class="hljs-line">            &lt;div&gt;
+</div><div class="hljs-line">                &lt;<span class="hljs-type">Counter</span>  caption=<span class="hljs-string">"First"</span> /&gt;
+</div><div class="hljs-line">                &lt;<span class="hljs-type">Counter</span>  caption=<span class="hljs-string">"Second"</span> initValue={<span class="hljs-number">10</span>}/&gt;
+</div><div class="hljs-line">                &lt;<span class="hljs-type">Counter</span>  caption=<span class="hljs-string">"Third"</span> initValue={<span class="hljs-number">5</span>} step={<span class="hljs-number">2</span>}/&gt;
+</div><div class="hljs-line">            &lt;/div&gt;
+</div><div class="hljs-line">        )
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> <span class="hljs-type">CounterPanel</span> 
+</div></code></pre>
+
+<p>在src目录下创建子组件Counter.js，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs kotlin"><div class="hljs-line"><span class="hljs-keyword">import</span> React,{Component} from <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span> <span class="hljs-title">extends</span> <span class="hljs-title">Component</span> </span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">constructor</span>(props){
+</div><div class="hljs-line">        <span class="hljs-keyword">super</span>(props); <span class="hljs-comment">//接受父元素的值，调用父类</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.newAdd = <span class="hljs-keyword">this</span>.newAdd.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.reduce = <span class="hljs-keyword">this</span>.reduce.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.state = {
+</div><div class="hljs-line">            count : props.initValue || <span class="hljs-number">0</span>, <span class="hljs-comment">//初始值，设置默认值也可以用Counter.defaultProps</span>
+</div><div class="hljs-line">            step : props.step || <span class="hljs-number">1</span> <span class="hljs-comment">//父元素有值就用父元素的值，没有默认为1</span>
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">        <span class="hljs-comment">//propTypes 类型检查 可以不写</span>
+</div><div class="hljs-line">        <span class="hljs-comment">//Counter.propTypes={</span>
+</div><div class="hljs-line">            <span class="hljs-comment">//caption:PropTypes.string.isRequired, //caption 类型必须是字符串</span>
+</div><div class="hljs-line">            <span class="hljs-comment">//initValue:PropTypes.number,</span>
+</div><div class="hljs-line">            <span class="hljs-comment">//step:PropTypes.number</span>
+</div><div class="hljs-line">        <span class="hljs-comment">//}</span>
+</div><div class="hljs-line">        <span class="hljs-comment">//设置默认值</span>
+</div><div class="hljs-line">        <span class="hljs-comment">//Counter.defaultProps ={</span>
+</div><div class="hljs-line">            <span class="hljs-comment">//initValue:0,</span>
+</div><div class="hljs-line">            <span class="hljs-comment">//step:1</span>
+</div><div class="hljs-line">        <span class="hljs-comment">//}</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">    newAdd(){
+</div><div class="hljs-line">       <span class="hljs-comment">//设置count值</span>
+</div><div class="hljs-line">       <span class="hljs-keyword">this</span>.setState({count :<span class="hljs-keyword">this</span>.state.count + <span class="hljs-keyword">this</span>.state.step})
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    reduce(){
+</div><div class="hljs-line">       <span class="hljs-keyword">this</span>.setState({count : <span class="hljs-keyword">this</span>.state.count - <span class="hljs-keyword">this</span>.state.step})
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    render(){
+</div><div class="hljs-line">        const {caption} =<span class="hljs-keyword">this</span>.props;
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">            &lt;div&gt;
+</div><div class="hljs-line">                &lt;button onClick = {<span class="hljs-keyword">this</span>.newAdd}&gt;+&lt;/button&gt;
+</div><div class="hljs-line">                &lt;button onClick = {<span class="hljs-keyword">this</span>.reduce}&gt;-&lt;/button&gt;
+</div><div class="hljs-line">                &lt;span&gt;
+</div><div class="hljs-line">                    {caption} Count :{<span class="hljs-keyword">this</span>.state.count}
+</div><div class="hljs-line">                &lt;/span&gt;
+</div><div class="hljs-line">            &lt;/div&gt;
+</div><div class="hljs-line">        )
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> Counter; <span class="hljs-comment">//默认抛出组件</span>
+</div></code></pre>
+
+<p>在src目录下index文件中注册，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs coffeescript"><div class="hljs-line"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-string">'./index.css'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> CounterPanel <span class="hljs-keyword">from</span> <span class="hljs-string">"./CounterPanel"</span>
+</div><div class="hljs-line">ReactDOM.render(&lt;CounterPanel /&gt;, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'root'</span>));
+</div></code></pre>
+
+<p><strong>6.2 子传父</strong>（子组件用函数形式返回，父组件用函数调用以及接收）</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs"><div class="hljs-line"> 功能：点击任何一个Counter的 + 或者 - 按钮，除了可以看见数值的变化外，底部的总计数也会随之变化
+</div></code></pre>
+
+<p>在src目录下创建父组件CounterPanel.js，代码如下：</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs kotlin"><div class="hljs-line"><span class="hljs-keyword">import</span> React , {Component} from <span class="hljs-string">"react"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> Counter from <span class="hljs-string">"./Counter"</span>  <span class="hljs-comment">//引入子组件</span>
+</div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CounterPanel</span> <span class="hljs-title">extends</span> <span class="hljs-title">Component</span></span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">constructor</span>(props){ <span class="hljs-comment">//父组件需要有自己的构造函数</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">super</span>(props);
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.onCounterUpdate=<span class="hljs-keyword">this</span>.onCounterUpdate.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.initValues=[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>]; <span class="hljs-comment">//初始值</span>
+</div><div class="hljs-line">        const initSum=<span class="hljs-keyword">this</span>.initValues.reduce((a,b)=&gt; a+b,<span class="hljs-number">0</span>); <span class="hljs-comment">//ES6 累和函数</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.state={
+</div><div class="hljs-line">            sum:initSum <span class="hljs-comment">//总和初始值</span>
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    onCounterUpdate(newValue,previousValue){
+</div><div class="hljs-line">        const valueChage=newValue-previousValue; <span class="hljs-comment">//增加或减少了多</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.setState({sum:<span class="hljs-keyword">this</span>.state.sum +valueChage}) <span class="hljs-comment">//设置总和</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    render(){
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">            &lt;div&gt;
+</div><div class="hljs-line">                &lt;Counter onUpdate={<span class="hljs-keyword">this</span>.onCounterUpdate} caption=<span class="hljs-string">"First"</span> initValue={<span class="hljs-keyword">this</span>.initValues[<span class="hljs-number">0</span>]}/&gt;
+</div><div class="hljs-line">                &lt;Counter onUpdate={<span class="hljs-keyword">this</span>.onCounterUpdate} caption=<span class="hljs-string">"Second"</span> initValue={<span class="hljs-keyword">this</span>.initValues[<span class="hljs-number">1</span>]}/&gt;
+</div><div class="hljs-line">                &lt;Counter onUpdate={<span class="hljs-keyword">this</span>.onCounterUpdate} caption=<span class="hljs-string">"Third"</span> initValue={<span class="hljs-keyword">this</span>.initValues[<span class="hljs-number">2</span>]} step={<span class="hljs-number">2</span>}/&gt;
+</div><div class="hljs-line">                &lt;div&gt;Total Count :{<span class="hljs-keyword">this</span>.state.sum}&lt;/div&gt;
+</div><div class="hljs-line">            &lt;/div&gt;
+</div><div class="hljs-line">        )
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> CounterPanel
+</div></code></pre>
+
+<p>在src目录下创建子组件Counter.js，代码如下：</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs kotlin"><div class="hljs-line"><span class="hljs-keyword">import</span> React,{Component} from <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span> <span class="hljs-title">extends</span> <span class="hljs-title">Component</span> </span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">constructor</span>(props){
+</div><div class="hljs-line">        <span class="hljs-keyword">super</span>(props);
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.newAdd = <span class="hljs-keyword">this</span>.newAdd.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.reduce = <span class="hljs-keyword">this</span>.reduce.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.state = {
+</div><div class="hljs-line">            count : props.initValue || <span class="hljs-number">0</span>,
+</div><div class="hljs-line">            step : props.step || <span class="hljs-number">1</span>
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">        <span class="hljs-comment">//设置默认值</span>
+</div><div class="hljs-line">        Counter.defaultProps ={
+</div><div class="hljs-line">            onUpdate: f=&gt;f <span class="hljs-comment">//默认是什么都不执行的函数</span>
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    newAdd(){
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.updateCount(<span class="hljs-literal">true</span>);<span class="hljs-comment">//只需调用updateCount更新函数</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    reduce(){
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.updateCount(<span class="hljs-literal">false</span>);
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    updateCount(isIncrement){
+</div><div class="hljs-line">        const previousValue = <span class="hljs-keyword">this</span>.state.count;
+</div><div class="hljs-line">        <span class="hljs-comment">//newValue 是当前赠或加之后得值  previousValue 是原来的值</span>
+</div><div class="hljs-line">        const newValue = isIncrement ? previousValue+<span class="hljs-keyword">this</span>.state.step : previousValue-<span class="hljs-keyword">this</span>.state.step;
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.setState({count:newValue});
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.props.onUpdate(newValue,previousValue) <span class="hljs-comment">//父组件的函数</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    render(){
+</div><div class="hljs-line">        const {caption} =<span class="hljs-keyword">this</span>.props;
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">            &lt;div&gt;
+</div><div class="hljs-line">                &lt;button onClick = {<span class="hljs-keyword">this</span>.newAdd}&gt;+&lt;/button&gt;
+</div><div class="hljs-line">                &lt;button onClick = {<span class="hljs-keyword">this</span>.reduce}&gt;-&lt;/button&gt;
+</div><div class="hljs-line">                &lt;span&gt;
+</div><div class="hljs-line">                    {caption} Count :{<span class="hljs-keyword">this</span>.state.count}
+</div><div class="hljs-line">                &lt;/span&gt;
+</div><div class="hljs-line">            &lt;/div&gt;
+</div><div class="hljs-line">        )
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> Counter;
+</div></code></pre>
+
+<p>在src目录下index文件中注册，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs coffeescript"><div class="hljs-line"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-string">'./index.css'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> CounterPanel <span class="hljs-keyword">from</span> <span class="hljs-string">"./CounterPanel"</span>
+</div><div class="hljs-line">ReactDOM.render(&lt;CounterPanel /&gt;, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'root'</span>));
+</div></code></pre>
+
+<h4 id="7-react-router-路由"><strong>7. React-Router 路由</strong></h4>
+
+<pre class="prettyprint hljs-dark"><code class="hljs clean"><div class="hljs-line">    待续......
+</div></code></pre></div></body></html>
