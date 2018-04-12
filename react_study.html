@@ -8,7 +8,11 @@
 
 <p><strong>首先，要确认已经安装了nodejs和npm</strong></p>
 
+
+
 <h4 id="1设置开发环境"><strong>1.设置开发环境</strong></h4>
+
+
 
 <pre class="prettyprint hljs-dark"><code class="hljs dsconfig"><div class="hljs-line">  <span class="hljs-string">npm </span><span class="hljs-string">install </span><span class="hljs-built_in">--global</span> <span class="hljs-built_in">create-react-app</span>  
 </div><div class="hljs-line">  全局安装<span class="hljs-built_in">create-react-app工具</span>
@@ -18,12 +22,16 @@
 
 <h4 id="2创建新项目"><strong>2.创建新项目</strong></h4>
 
+
+
 <pre class="prettyprint hljs-dark"><code class="hljs dsconfig"><div class="hljs-line"> <span class="hljs-built_in">create-react-app</span> 项目名称
 </div></code></pre>
 
 
 
 <h4 id="3启动服务器"><strong>3.启动服务器</strong></h4>
+
+
 
 <pre class="prettyprint hljs-dark"><code class="hljs dockerfile"><div class="hljs-line">在当前项目下打开终端（<span class="hljs-keyword">cmd</span><span class="bash">命令窗口）
 </span></div><div class="hljs-line">npm start 启动项目（在package.json 中 scripts 里查看）
@@ -36,11 +44,15 @@
 
 <p><strong>4.1分析create-react-app给我们自动产生的代码</strong></p>
 
+
+
 <pre class="prettyprint hljs-dark"><code class="hljs stylus"><div class="hljs-line">  项目目录下包含如下文件夹：src public README<span class="hljs-selector-class">.md</span> package<span class="hljs-selector-class">.json</span> node_modules
 </div><div class="hljs-line">  在开发过程中，我们要关注的 src 目录中的内容，这个目录中是所有的源代码
 </div></code></pre>
 
 <p><strong>4.2入口文件 src/index.js 文件，代码如下：</strong></p>
+
+
 
 <pre class="prettyprint hljs-dark"><code class="hljs typescript"><div class="hljs-line">    <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>; <span class="hljs-comment">//核心库</span>
 </div><div class="hljs-line">    <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;<span class="hljs-comment">//React的Dom适配库</span>
@@ -58,10 +70,14 @@
 
 <h4 id="5增加一个新的react组件"><strong>5.增加一个新的React组件</strong></h4>
 
+
+
 <pre class="prettyprint hljs-dark"><code class="hljs"><div class="hljs-line">   功能：定义一个能够点击计算增加减少数的组件
 </div></code></pre>
 
 <p>在src目录下增加一个Click Counter.js，代码如下：</p>
+
+
 
 <pre class="prettyprint hljs-dark"><code class="hljs kotlin"><div class="hljs-line"><span class="hljs-keyword">import</span> React,{Component} from <span class="hljs-string">'react'</span>;  <span class="hljs-comment">//导入react组件</span>
 </div><div class="hljs-line"><span class="hljs-comment">//ES6语法  定义一个继承React的Click Counter类</span>
@@ -97,6 +113,8 @@
 
 <p>在src目录的index.js文件中注册，代码如下：</p>
 
+
+
 <pre class="prettyprint hljs-dark"><code class="hljs coffeescript"><div class="hljs-line"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 </div><div class="hljs-line"><span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 </div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-string">'./index.css'</span>;
@@ -110,10 +128,14 @@
 
 <p><strong>6.1 父传子</strong>（用props接收）</p>
 
+
+
 <pre class="prettyprint hljs-dark"><code class="hljs"><div class="hljs-line">功能：点击任何一个Counter的 + 或者 - 按钮 ，实现对应的Counter的计数变化
 </div></code></pre>
 
 <p>在src目录下创建父组件CounterPanel.js，代码如下：</p>
+
+
 
 <pre class="prettyprint hljs-dark"><code class="hljs scala"><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">React</span> , {<span class="hljs-type">Component</span>} from <span class="hljs-string">"react"</span>;
 </div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">Counter</span> from <span class="hljs-string">"./Counter"</span> <span class="hljs-comment">//引入子组件</span>
@@ -195,10 +217,14 @@
 
 <p><strong>6.2 子传父</strong>（子组件用函数形式返回，父组件用函数调用以及接收）</p>
 
+
+
 <pre class="prettyprint hljs-dark"><code class="hljs"><div class="hljs-line"> 功能：点击任何一个Counter的 + 或者 - 按钮，除了可以看见数值的变化外，底部的总计数也会随之变化
 </div></code></pre>
 
 <p>在src目录下创建父组件CounterPanel.js，代码如下：</p>
+
+
 
 <pre class="prettyprint hljs-dark"><code class="hljs kotlin"><div class="hljs-line"><span class="hljs-keyword">import</span> React , {Component} from <span class="hljs-string">"react"</span>;
 </div><div class="hljs-line"><span class="hljs-keyword">import</span> Counter from <span class="hljs-string">"./Counter"</span>  <span class="hljs-comment">//引入子组件</span>
@@ -231,6 +257,8 @@
 </div></code></pre>
 
 <p>在src目录下创建子组件Counter.js，代码如下：</p>
+
+
 
 <pre class="prettyprint hljs-dark"><code class="hljs kotlin"><div class="hljs-line"><span class="hljs-keyword">import</span> React,{Component} from <span class="hljs-string">'react'</span>;
 </div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span> <span class="hljs-title">extends</span> <span class="hljs-title">Component</span> </span>{
@@ -287,7 +315,67 @@
 </div><div class="hljs-line">ReactDOM.render(&lt;CounterPanel /&gt;, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'root'</span>));
 </div></code></pre>
 
+
+
 <h4 id="7-react-router-路由"><strong>7. React-Router 路由</strong></h4>
 
-<pre class="prettyprint hljs-dark"><code class="hljs clean"><div class="hljs-line">    待续......
+<p><strong>首先 npm i react-router –save-dev   下载到生产环境</strong></p>
+
+<p>在src目录下创建pages文件夹里面包含三个组件 分别为Home.js   About.js   NotFound.js  代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs scala"><div class="hljs-line"> <span class="hljs-comment">//Home.js 组件</span>
+</div><div class="hljs-line"> <span class="hljs-keyword">import</span> <span class="hljs-type">React</span> , {<span class="hljs-type">Component</span>} from <span class="hljs-string">"react"</span>;
+</div><div class="hljs-line"> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Home</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span></span>{
+</div><div class="hljs-line">    render(){
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">            &lt;div&gt;
+</div><div class="hljs-line">                &lt;h1&gt;<span class="hljs-type">Home</span>&lt;/h1&gt;  <span class="hljs-comment">//内容</span>
+</div><div class="hljs-line">            &lt;/div&gt;
+</div><div class="hljs-line">        )
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> <span class="hljs-type">Home</span>;
+</div><div class="hljs-line"><span class="hljs-comment">//About.js 组件 和 NotFound.js 组件 同上  内容不同</span>
+</div></code></pre>
+
+<p>在src目录下创建routes.js 路由文件，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs scala"><div class="hljs-line"><span class="hljs-comment">//React-router库提供了两个组件来完成路由功能，</span>
+</div><div class="hljs-line"><span class="hljs-comment">//一个是Router（在整个应用中只需要一个实例，代表整个路由器）</span>
+</div><div class="hljs-line"><span class="hljs-comment">//另一个是Route（代表每一个路径对应页面的路由规则，一个应用中应该会有多个Route实例）</span>
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">React</span>, { <span class="hljs-type">Component</span> } from <span class="hljs-symbol">'reac</span>t';
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> {<span class="hljs-type">Router</span>,<span class="hljs-type">Route</span>,hashHistory} from <span class="hljs-symbol">'react</span>-router'  <span class="hljs-comment">//导入路由</span>
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">Home</span> from <span class="hljs-string">"./pages/Home.js"</span>  <span class="hljs-comment">//导入组件</span>
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">About</span> from <span class="hljs-string">"./pages/About.js"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">NotFound</span> from <span class="hljs-string">"./pages/NotFound.js"</span>;
+</div><div class="hljs-line"><span class="hljs-comment">//browserHistory 和 hashHistory 区别 https://www.cnblogs.com/liuna/p/6137970.html</span>
+</div><div class="hljs-line"><span class="hljs-comment">//history 属性有三个值：browserHistory  hashHistory  createMemoryHistory</span>
+</div><div class="hljs-line"><span class="hljs-comment">//创建路由</span>
+</div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Routes</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span></span>{
+</div><div class="hljs-line">    render(){
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">            &lt;<span class="hljs-type">Router</span> history={hashHistory}&gt;
+</div><div class="hljs-line">                &lt;<span class="hljs-type">Route</span> path=<span class="hljs-string">"/"</span> component={<span class="hljs-type">Home</span>} /&gt; <span class="hljs-comment">//默认打开Home页</span>
+</div><div class="hljs-line">                &lt;<span class="hljs-type">Route</span> path=<span class="hljs-string">"home"</span> component={<span class="hljs-type">Home</span>} /&gt;
+</div><div class="hljs-line">                &lt;<span class="hljs-type">Route</span> path=<span class="hljs-string">"about"</span> component={<span class="hljs-type">About</span>} /&gt;
+</div><div class="hljs-line">                &lt;<span class="hljs-type">Route</span> path=<span class="hljs-string">"*"</span> component={<span class="hljs-type">NotFound</span>} /&gt;
+</div><div class="hljs-line">            &lt;/<span class="hljs-type">Router</span>&gt;
+</div><div class="hljs-line">        )
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> <span class="hljs-type">Routes</span>;
+</div></code></pre>
+
+<p>在src目录下index文件中注册，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs coffeescript"><div class="hljs-line"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> Routes <span class="hljs-keyword">from</span> <span class="hljs-string">"./Routes.js"</span>
+</div><div class="hljs-line">ReactDOM.render(&lt;Routes /&gt;, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'root'</span>));
 </div></code></pre></div></body></html>

@@ -264,4 +264,59 @@ import CounterPanel from "./CounterPanel"
 ReactDOM.render(<CounterPanel />, document.getElementById('root'));
 ```
 #### **7. React-Router 路由**
-        待续......
+     
+
+ **首先 npm i react-router --save-dev   下载到生产环境**
+ 
+ 在src目录下创建pages文件夹里面包含三个组件 分别为Home.js   About.js   NotFound.js  代码如下：
+
+```
+ //Home.js 组件
+ import React , {Component} from "react";
+ class Home extends Component{
+    render(){
+        return(
+            <div>
+                <h1>Home</h1>  //内容
+            </div>
+        )
+    }
+}
+export default Home;
+//About.js 组件 和 NotFound.js 组件 同上  内容不同
+```
+在src目录下创建routes.js 路由文件，代码如下：
+
+```
+//React-router库提供了两个组件来完成路由功能，
+//一个是Router（在整个应用中只需要一个实例，代表整个路由器）
+//另一个是Route（代表每一个路径对应页面的路由规则，一个应用中应该会有多个Route实例）
+import React, { Component } from 'react';
+import {Router,Route,hashHistory} from 'react-router'  //导入路由
+import Home from "./pages/Home.js"  //导入组件
+import About from "./pages/About.js";
+import NotFound from "./pages/NotFound.js";
+//browserHistory 和 hashHistory 区别 https://www.cnblogs.com/liuna/p/6137970.html
+//history 属性有三个值：browserHistory  hashHistory  createMemoryHistory
+//创建路由
+class Routes extends Component{
+    render(){
+        return(
+            <Router history={hashHistory}>
+                <Route path="/" component={Home} /> //默认打开Home页
+                <Route path="home" component={Home} />
+                <Route path="about" component={About} />
+                <Route path="*" component={NotFound} />
+            </Router>
+        )
+    }
+}
+export default Routes;
+```
+在src目录下index文件中注册，代码如下：
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Routes from "./Routes.js"
+ReactDOM.render(<Routes />, document.getElementById('root'));
+```
