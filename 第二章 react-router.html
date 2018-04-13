@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><title>第二章 react-router</title><meta charset='utf-8'><link href='https://dn-maxiang.qbox.me/res-min/themes/marxico.css' rel='stylesheet'><style></style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+<h1 id="第二章-react-router">第二章 react-router</h1>
+
+<p><strong>首先，确认已安装react-router   命令   npm i react-router –save-dev  安装到生产环境</strong></p>
+
+
+
+<h4 id="1路由链接和嵌套">1.路由链接和嵌套</h4>
+
+<p>首先，在src目录下创建components文件夹下面创建通用的TopMenu.js文件，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs javascript"><div class="hljs-line"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> {Link} <span class="hljs-keyword">from</span> <span class="hljs-string">'react-router'</span>; <span class="hljs-comment">//解析Link组件</span>
+</div><div class="hljs-line"><span class="hljs-keyword">const</span> view=<span class="hljs-function"><span class="hljs-params">()</span>=&gt;</span> {
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+</span></div><div class="hljs-line">            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+</div><div class="hljs-line">                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">"/home"</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+</div><div class="hljs-line">               //Link组件的to属性指向一个路径，对应路径在src/Routes.js中应有定义，注意前面有/，代表从根路径开始匹配
+</div><div class="hljs-line">                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">Link</span> <span class="hljs-attr">to</span>=<span class="hljs-string">"/about"</span>&gt;</span>About<span class="hljs-tag">&lt;/<span class="hljs-name">Link</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+</div><div class="hljs-line">            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+</div><div class="hljs-line">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</div><div class="hljs-line">    )
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-keyword">export</span> {view}
+</div><div class="hljs-line"><span class="hljs-comment">//可以直接在Home About NotFound组件中直接引用TopMenu组件，但是若将来要用另外一个组件替换掉TopMenu组件，又必须要修改每一个文件，故使用路由嵌套功能解决此问题</span>
+</div></code></pre>
+
+<p>在src/pages/App.js中定义个新的React组件App，这个组件包含TopMenu组件，同时也会渲染出Home、About或者NotFound页面，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs javascript"><div class="hljs-line"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> {view <span class="hljs-keyword">as</span> TopMenu} <span class="hljs-keyword">from</span> <span class="hljs-string">'../components/TopMenu.js'</span>
+</div><div class="hljs-line"><span class="hljs-keyword">const</span> App =<span class="hljs-function">(<span class="hljs-params">{children}</span>)=&gt;</span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+</span></div><div class="hljs-line">            <span class="hljs-tag">&lt;<span class="hljs-name">TopMenu</span> /&gt;</span>
+</div><div class="hljs-line">            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span> //children代表子组件  Home About  NotFound 
+</div><div class="hljs-line">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</div><div class="hljs-line">    )
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;
+</div></code></pre>
+
+<p>在src/Routers.js</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs scala"><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">React</span>, { <span class="hljs-type">Component</span> } from <span class="hljs-symbol">'reac</span>t';
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> {<span class="hljs-type">Router</span>,<span class="hljs-type">Route</span>,hashHistory,<span class="hljs-type">IndexRoute</span>} from <span class="hljs-symbol">'react</span>-router'
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">Home</span> from <span class="hljs-string">"./pages/Home.js"</span>
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">About</span> from <span class="hljs-string">"./pages/About.js"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">NotFound</span> from <span class="hljs-string">"./pages/NotFound.js"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">App</span> from <span class="hljs-string">"./pages/App.js"</span>
+</div><div class="hljs-line"><span class="hljs-comment">//browserHistory 和 hashHistory 区别 https://www.cnblogs.com/liuna/p/6137970.html</span>
+</div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Routes</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span></span>{
+</div><div class="hljs-line">    render(){
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">            &lt;<span class="hljs-type">Router</span> history={hashHistory}&gt;
+</div><div class="hljs-line">                &lt;<span class="hljs-type">Route</span> path=<span class="hljs-string">"/"</span> component ={<span class="hljs-type">App</span>}&gt;
+</div><div class="hljs-line">                    &lt;<span class="hljs-type">IndexRoute</span> component={<span class="hljs-type">Home</span>} /&gt; <span class="hljs-comment">//默认链接</span>
+</div><div class="hljs-line">                    &lt;<span class="hljs-type">Route</span> path=<span class="hljs-string">"home"</span> component={<span class="hljs-type">Home</span>} /&gt;
+</div><div class="hljs-line">                    &lt;<span class="hljs-type">Route</span> path=<span class="hljs-string">"about"</span> component={<span class="hljs-type">About</span>} /&gt;
+</div><div class="hljs-line">                    &lt;<span class="hljs-type">Route</span> path=<span class="hljs-string">"*"</span> component={<span class="hljs-type">NotFound</span>} /&gt;
+</div><div class="hljs-line">                &lt;/<span class="hljs-type">Route</span>&gt;  
+</div><div class="hljs-line">                <span class="hljs-comment">//IndexRoute代表一个Route下的默认路由，</span>
+</div><div class="hljs-line">                <span class="hljs-comment">//这样一来无论http://localhost:3000还是http://localhost:3000/home访问都是包含Home主页内容的</span>
+</div><div class="hljs-line">            &lt;/<span class="hljs-type">Router</span>&gt;
+</div><div class="hljs-line">        )
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> <span class="hljs-type">Routes</span>;
+</div></code></pre>
+
+<p>更多路由详情清查看  <a href="https://blog.csdn.net/haoshidai/article/details/52755193" target="_blank">https://blog.csdn.net/haoshidai/article/details/52755193</a></p></div></body></html>
