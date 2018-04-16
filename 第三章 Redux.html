@@ -257,4 +257,107 @@ import * as ActionTypes from ‘./ActionTypes.js’;</p>
 </div><div class="hljs-line"><span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 </div><div class="hljs-line"><span class="hljs-keyword">import</span> CounterParent <span class="hljs-keyword">from</span> <span class="hljs-string">"./views/CounterParent"</span>
 </div><div class="hljs-line">ReactDOM.render(&lt;CounterParent /&gt;, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'root'</span>));
+</div></code></pre>
+
+
+
+<h4 id="3容器组件和傻瓜组件父子关系">3.容器组件和傻瓜组件（父子关系）</h4>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs maxima"><div class="hljs-line">容器组件：负责和Redux Store打交道的组件，处于外层
+</div><div class="hljs-line">傻瓜组件：只专心负责渲染界面的组件，处于内层，也叫做展示组件，实质上就是一个纯函数，根据<span class="hljs-built_in">props</span>产生结果
+</div></code></pre>
+
+<p>拆分容器组件和傻瓜组件，实际上，让傻瓜组件无状态，是我们拆分的主要目的之一，傻瓜组件指需要根据props来渲染结果，不需要state。 然而转台全部都交给容器组件去打点，这是它的责任。容器组件通过props传递给傻瓜组件。</p>
+
+<p>把上面的代码进行改进，实际上只有视图部分代码改变，再试图代码src/views/Counterson.js 中定义两个组件Counter.js（傻瓜组件）和CounterContainer（容器组件）代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs kotlin"><div class="hljs-line"><span class="hljs-keyword">import</span> React,{Component} from <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> store from <span class="hljs-string">'../Store.js'</span>
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> Actions from <span class="hljs-string">'../Actions.js'</span>;
+</div><div class="hljs-line">const buttonStyle = {
+</div><div class="hljs-line">    margin: <span class="hljs-string">'10px'</span>
+</div><div class="hljs-line">  };
+</div><div class="hljs-line">  <span class="hljs-comment">//傻瓜组件Counter代码逻辑前所未有的简单，只有一个render函数，可以看到Counter组件完全没有state，只有一个render方法，所有数据都来自于props，这种组件叫做“无状态”组件</span>
+</div><div class="hljs-line">  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span> <span class="hljs-title">extends</span> <span class="hljs-title">Component</span> </span>{
+</div><div class="hljs-line">    render() {
+</div><div class="hljs-line">      const {caption, newAdd, reduce, value} = <span class="hljs-keyword">this</span>.props;
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">      <span class="hljs-keyword">return</span> (
+</div><div class="hljs-line">        &lt;div&gt;
+</div><div class="hljs-line">          &lt;button style={buttonStyle} onClick={newAdd}&gt;+&lt;/button&gt;
+</div><div class="hljs-line">          &lt;button style={buttonStyle} onClick={reduce}&gt;-&lt;/button&gt;
+</div><div class="hljs-line">          &lt;span&gt;{caption} count: {value}&lt;/span&gt;
+</div><div class="hljs-line">        &lt;/div&gt;
+</div><div class="hljs-line">      );
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">  }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//   Counter.propTypes = {</span>
+</div><div class="hljs-line"><span class="hljs-comment">//     caption: PropTypes.string.isRequired,</span>
+</div><div class="hljs-line"><span class="hljs-comment">//     newAdd: PropTypes.func.isRequired,</span>
+</div><div class="hljs-line"><span class="hljs-comment">//     reduce: PropTypes.func.isRequired,</span>
+</div><div class="hljs-line"><span class="hljs-comment">//     value: PropTypes.number.isRequired</span>
+</div><div class="hljs-line"><span class="hljs-comment">//   };</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">  <span class="hljs-comment">//CounterContainer 组件承担了所有和Store关联的工作，它的render函数就是渲染傻瓜组件Counter而已，只负责传递必要的prop</span>
+</div><div class="hljs-line">  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CounterContainer</span> <span class="hljs-title">extends</span> <span class="hljs-title">Component</span> </span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">constructor</span>(props) {
+</div><div class="hljs-line">      <span class="hljs-keyword">super</span>(props);
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">      <span class="hljs-keyword">this</span>.newAdd = <span class="hljs-keyword">this</span>.newAdd.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">      <span class="hljs-keyword">this</span>.reduce = <span class="hljs-keyword">this</span>.reduce.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">      <span class="hljs-keyword">this</span>.onChange = <span class="hljs-keyword">this</span>.onChange.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">      <span class="hljs-keyword">this</span>.getOwnState = <span class="hljs-keyword">this</span>.getOwnState.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">      <span class="hljs-keyword">this</span>.state = <span class="hljs-keyword">this</span>.getOwnState();
+</div><div class="hljs-line">    }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">    getOwnState() {
+</div><div class="hljs-line">      <span class="hljs-keyword">return</span> {
+</div><div class="hljs-line">        value: store.getState()[<span class="hljs-keyword">this</span>.props.caption]
+</div><div class="hljs-line">      };
+</div><div class="hljs-line">    }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">    newAdd() {
+</div><div class="hljs-line">      store.dispatch(Actions.newAdd(<span class="hljs-keyword">this</span>.props.caption));
+</div><div class="hljs-line">    }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">    reduce() {
+</div><div class="hljs-line">      store.dispatch(Actions.reduce(<span class="hljs-keyword">this</span>.props.caption));
+</div><div class="hljs-line">    }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">    onChange() {
+</div><div class="hljs-line">      <span class="hljs-keyword">this</span>.setState(<span class="hljs-keyword">this</span>.getOwnState());
+</div><div class="hljs-line">    }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">    shouldComponentUpdate(nextProps, nextState) {
+</div><div class="hljs-line">      <span class="hljs-keyword">return</span> (nextProps.caption !== <span class="hljs-keyword">this</span>.props.caption) || (nextState.value !== <span class="hljs-keyword">this</span>.state.value);
+</div><div class="hljs-line">    }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">    componentDidMount() {
+</div><div class="hljs-line">      store.subscribe(<span class="hljs-keyword">this</span>.onChange);
+</div><div class="hljs-line">    }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">    componentWillUnmount() {
+</div><div class="hljs-line">      store.unsubscribe(<span class="hljs-keyword">this</span>.onChange);
+</div><div class="hljs-line">    }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">    render() {
+</div><div class="hljs-line">      <span class="hljs-keyword">return</span> &lt;Counter caption={<span class="hljs-keyword">this</span>.props.caption}
+</div><div class="hljs-line">        newAdd={<span class="hljs-keyword">this</span>.newAdd}
+</div><div class="hljs-line">        reduce={<span class="hljs-keyword">this</span>.reduce}
+</div><div class="hljs-line">        value={<span class="hljs-keyword">this</span>.state.value} /&gt;
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">  }
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//   CounterContainer.propTypes = {</span>
+</div><div class="hljs-line"><span class="hljs-comment">//     caption: PropTypes.string.isRequired</span>
+</div><div class="hljs-line"><span class="hljs-comment">//   };</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">  export <span class="hljs-keyword">default</span> CounterContainer;
+</div><div class="hljs-line">  <span class="hljs-comment">//可以看到，这个文件export导出的不再是Counter组件，认识CounterContainer组件，也就是说对于使用这个试图的模块来说，根本不会感受到傻瓜组件的存在，从外部看到的就只是容器组件。</span>
 </div></code></pre></div></body></html>

@@ -224,5 +224,101 @@ import ReactDOM from 'react-dom';
 import CounterParent from "./views/CounterParent"
 ReactDOM.render(<CounterParent />, document.getElementById('root'));
 ```
+#### 3.容器组件和傻瓜组件（父子关系）
 
+```
+容器组件：负责和Redux Store打交道的组件，处于外层
+傻瓜组件：只专心负责渲染界面的组件，处于内层，也叫做展示组件，实质上就是一个纯函数，根据props产生结果
+```
+拆分容器组件和傻瓜组件，实际上，让傻瓜组件无状态，是我们拆分的主要目的之一，傻瓜组件指需要根据props来渲染结果，不需要state。 然而转台全部都交给容器组件去打点，这是它的责任。容器组件通过props传递给傻瓜组件。
+
+把上面的代码进行改进，实际上只有视图部分代码改变，再试图代码src/views/Counterson.js 中定义两个组件Counter.js（傻瓜组件）和CounterContainer（容器组件）代码如下：
+
+```
+import React,{Component} from 'react';
+import store from '../Store.js'
+import * as Actions from '../Actions.js';
+const buttonStyle = {
+    margin: '10px'
+  };
+  //傻瓜组件Counter代码逻辑前所未有的简单，只有一个render函数，可以看到Counter组件完全没有state，只有一个render方法，所有数据都来自于props，这种组件叫做“无状态”组件
+  class Counter extends Component {
+    render() {
+      const {caption, newAdd, reduce, value} = this.props;
+  
+      return (
+        <div>
+          <button style={buttonStyle} onClick={newAdd}>+</button>
+          <button style={buttonStyle} onClick={reduce}>-</button>
+          <span>{caption} count: {value}</span>
+        </div>
+      );
+    }
+  }
+  
+//   Counter.propTypes = {
+//     caption: PropTypes.string.isRequired,
+//     newAdd: PropTypes.func.isRequired,
+//     reduce: PropTypes.func.isRequired,
+//     value: PropTypes.number.isRequired
+//   };
+  
+  //CounterContainer 组件承担了所有和Store关联的工作，它的render函数就是渲染傻瓜组件Counter而已，只负责传递必要的prop
+  class CounterContainer extends Component {
+    constructor(props) {
+      super(props);
+  
+      this.newAdd = this.newAdd.bind(this);
+      this.reduce = this.reduce.bind(this);
+      this.onChange = this.onChange.bind(this);
+      this.getOwnState = this.getOwnState.bind(this);
+  
+      this.state = this.getOwnState();
+    }
+  
+    getOwnState() {
+      return {
+        value: store.getState()[this.props.caption]
+      };
+    }
+  
+    newAdd() {
+      store.dispatch(Actions.newAdd(this.props.caption));
+    }
+  
+    reduce() {
+      store.dispatch(Actions.reduce(this.props.caption));
+    }
+  
+    onChange() {
+      this.setState(this.getOwnState());
+    }
+  
+    shouldComponentUpdate(nextProps, nextState) {
+      return (nextProps.caption !== this.props.caption) || (nextState.value !== this.state.value);
+    }
+  
+    componentDidMount() {
+      store.subscribe(this.onChange);
+    }
+  
+    componentWillUnmount() {
+      store.unsubscribe(this.onChange);
+    }
+  
+    render() {
+      return <Counter caption={this.props.caption}
+        newAdd={this.newAdd}
+        reduce={this.reduce}
+        value={this.state.value} />
+    }
+  }
+  
+//   CounterContainer.propTypes = {
+//     caption: PropTypes.string.isRequired
+//   };
+  
+  export default CounterContainer;
+  //可以看到，这个文件export导出的不再是Counter组件，认识CounterContainer组件，也就是说对于使用这个试图的模块来说，根本不会感受到傻瓜组件的存在，从外部看到的就只是容器组件。
+```
 
