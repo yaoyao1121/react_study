@@ -70,6 +70,24 @@ const store = createStore(reducer,initValues); //创建仓库
 //createStore函数是Redux库提供的，第一个参数代表更新状态，第二个参数代表初始值，第三个参数可选，代表Store Enhancer
 export default store;
 ```
+在src目录下定义Reducer.js 仓库 ，代码如下：
+import * as ActionTypes from './ActionTypes.js';
+
+```
+export default (state,action) =>{
+    const {counterCaption}=action;
+    switch(action.type){
+        case ActionTypes.NEWADD:
+            return {...state,[counterCaption]:state[counterCaption]+1};
+        case ActionTypes.REDUCE:
+            return {...state,[counterCaption]:state[counterCaption]-1};
+        default :
+            return state
+    }
+}
+//代码中使用了三个点组成的扩展操作符，这个表示把state中所有字段扩展开，而后面对counterCaption 值对应的字段会赋上新值
+```
+
 在src/views目录下，创建CounterParent.js  代码如下：
 
 ```

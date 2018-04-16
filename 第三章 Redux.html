@@ -99,9 +99,26 @@
 </div><div class="hljs-line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> store;
 </div></code></pre>
 
+<p>在src目录下定义Reducer.js 仓库 ，代码如下： <br>
+import * as ActionTypes from ‘./ActionTypes.js’;</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs pf"><div class="hljs-line">export <span class="hljs-keyword">default</span> (<span class="hljs-keyword">state</span>,action) =&gt;{
+</div><div class="hljs-line">    const {counterCaption}=action;
+</div><div class="hljs-line">    switch(action.type){
+</div><div class="hljs-line">        case ActionTypes.NEWADD:
+</div><div class="hljs-line">            return {...<span class="hljs-keyword">state</span>,[counterCaption]:<span class="hljs-keyword">state</span>[counterCaption]+<span class="hljs-number">1</span>};
+</div><div class="hljs-line">        case ActionTypes.REDUCE:
+</div><div class="hljs-line">            return {...<span class="hljs-keyword">state</span>,[counterCaption]:<span class="hljs-keyword">state</span>[counterCaption]-<span class="hljs-number">1</span>};
+</div><div class="hljs-line">        <span class="hljs-keyword">default</span> :
+</div><div class="hljs-line">            return <span class="hljs-keyword">state</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">//代码中使用了三个点组成的扩展操作符，这个表示把<span class="hljs-keyword">state</span>中所有字段扩展开，而后面对counterCaption 值对应的字段会赋上新值
+</div></code></pre>
+
 <p>在src/views目录下，创建CounterParent.js  代码如下：</p>
-
-
 
 <pre class="prettyprint hljs-dark"><code class="hljs scala"><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">React</span> , {<span class="hljs-type">Component</span>} from <span class="hljs-string">"react"</span>;
 </div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">Counterson</span> from <span class="hljs-string">"./Counterson.js"</span>;
