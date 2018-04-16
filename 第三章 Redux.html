@@ -1,0 +1,243 @@
+<!DOCTYPE html><html><head><title>第三章 Redux</title><meta charset='utf-8'><link href='https://dn-maxiang.qbox.me/res-min/themes/marxico.css' rel='stylesheet'><style></style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+<h1 id="第三章-redux">第三章 Redux</h1>
+
+
+
+<h4 id="1redux的基本原则">1.Redux的基本原则</h4>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs fortran"><div class="hljs-line">Flux的基本原则是“单向数据流”，redux是管理State的一个东东，所有State都需要经过redux来操作
+</div><div class="hljs-line">Redux在此基础上强调三个基本原则：
+</div><div class="hljs-line"> 唯一数据源：指的是应用的状态数据应该只存储在唯一的一个Store上
+</div><div class="hljs-line"> 保持状态只读：指不能直接修改状态，要修改Store的状态，必须要通过派发一个<span class="hljs-keyword">action</span>对象完成
+</div><div class="hljs-line"> 数据改变只能通过纯函数完成：纯函数就是指Reducer
+</div></code></pre>
+
+
+
+<h4 id="2redux的基本概念-action-reducer-store">2..Redux的基本概念（ Action   Reducer  Store）</h4>
+
+<p><strong>Action</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs llvm"><div class="hljs-line">概念：是把数据从应用传到Store的有效载荷。它是<span class="hljs-keyword">store</span>数据的唯一来源。用法通过<span class="hljs-keyword">store</span>.dispatch()把action传到<span class="hljs-keyword">store</span>.
+</div><div class="hljs-line">作用：<span class="hljs-number">1</span>.用Action来分辨具体执行动作   <span class="hljs-number">2</span>.操作数据首先的得到数据
+</div></code></pre>
+
+<p><strong>Reducer</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs pf"><div class="hljs-line">概念：Action只是描述了有事情发生这一事实，并没有指明应用如何更新<span class="hljs-keyword">state</span>。这是reducer要做的事情。
+</div><div class="hljs-line">通俗解释：Action就像leader,告诉我们应该做哪些事儿，并且给我们提供资源，真正干活的是苦逼的Reducer。
+</div></code></pre>
+
+<p><strong>Store</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs pf"><div class="hljs-line"> 一个应用只能有一个Store
+</div><div class="hljs-line"> 概念：Store就是把action和reducers联系起来的对象，Store有以下职责：
+</div><div class="hljs-line">  · 维持应用的 <span class="hljs-keyword">state</span> ；
+</div><div class="hljs-line">  · 提供 getState() 方法获取 <span class="hljs-keyword">state</span> ;
+</div><div class="hljs-line">  · 提供 dispatch(action) 方法更新 <span class="hljs-keyword">state</span> ;
+</div><div class="hljs-line">  · 通过 subscribe(listener) 注册监听器 。 
+</div></code></pre>
+
+
+
+<h4 id="3redux实例">3.Redux实例</h4>
+
+<p>在src目录下定义ActionTypes.js，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs arduino"><div class="hljs-line"><span class="hljs-comment">//定义事件类型 </span>
+</div><div class="hljs-line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> NEWADD = <span class="hljs-string">'newAdd'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> REDUCE = <span class="hljs-string">'reduce'</span>;
+</div></code></pre>
+
+<p>在src目录下定义Actions.js，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs javascript"><div class="hljs-line"><span class="hljs-comment">//定义事件</span>
+</div><div class="hljs-line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> newAdd = <span class="hljs-function">(<span class="hljs-params">counterCaption</span>) =&gt;</span> {
+</div><div class="hljs-line">  <span class="hljs-keyword">return</span>{
+</div><div class="hljs-line">    <span class="hljs-attr">type</span>: ActionTypes.NEWADD,
+</div><div class="hljs-line">    <span class="hljs-attr">counterCaption</span>: counterCaption
+</div><div class="hljs-line">  }
+</div><div class="hljs-line">};
+</div><div class="hljs-line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> reduce = <span class="hljs-function">(<span class="hljs-params">counterCaption</span>) =&gt;</span> {
+</div><div class="hljs-line">  <span class="hljs-keyword">return</span>{
+</div><div class="hljs-line">    <span class="hljs-attr">type</span>: ActionTypes.REDUCE,
+</div><div class="hljs-line">    <span class="hljs-attr">counterCaption</span>: counterCaption
+</div><div class="hljs-line">  }
+</div><div class="hljs-line">};
+</div></code></pre>
+
+<p>在src目录下定义Store.js 仓库 ，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs javascript"><div class="hljs-line"><span class="hljs-keyword">import</span> {createStore} <span class="hljs-keyword">from</span> <span class="hljs-string">'redux'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> reducer <span class="hljs-keyword">from</span> <span class="hljs-string">'./Reducer.js'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">const</span> initValues={
+</div><div class="hljs-line">    <span class="hljs-string">'First'</span>:<span class="hljs-number">0</span>,
+</div><div class="hljs-line">    <span class="hljs-string">'Second'</span>:<span class="hljs-number">10</span>,
+</div><div class="hljs-line">    <span class="hljs-string">'Third'</span>:<span class="hljs-number">20</span>
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-keyword">const</span> store = createStore(reducer,initValues); <span class="hljs-comment">//创建仓库</span>
+</div><div class="hljs-line"><span class="hljs-comment">//createStore函数是Redux库提供的，第一个参数代表更新状态，第二个参数代表初始值，第三个参数可选，代表Store Enhancer</span>
+</div><div class="hljs-line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> store;
+</div></code></pre>
+
+<p>在src/views目录下，创建CounterParent.js  代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs scala"><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">React</span> , {<span class="hljs-type">Component</span>} from <span class="hljs-string">"react"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">Counterson</span> from <span class="hljs-string">"./Counterson.js"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> <span class="hljs-type">Summary</span> from <span class="hljs-string">"./Summary.js"</span>;
+</div><div class="hljs-line">const style ={
+</div><div class="hljs-line">    margin:<span class="hljs-symbol">'20p</span>x'   <span class="hljs-comment">//定义样式</span>
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CounterParent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span></span>{
+</div><div class="hljs-line">    render(){
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">            &lt;div style={style}&gt;
+</div><div class="hljs-line">               &lt;<span class="hljs-type">Counterson</span> caption=<span class="hljs-string">"First"</span>/&gt;
+</div><div class="hljs-line">               &lt;<span class="hljs-type">Counterson</span> caption=<span class="hljs-string">"Second"</span>/&gt;
+</div><div class="hljs-line">               &lt;<span class="hljs-type">Counterson</span> caption=<span class="hljs-string">"Third"</span>/&gt;
+</div><div class="hljs-line">               &lt;hr/&gt;
+</div><div class="hljs-line">               &lt;<span class="hljs-type">Summary</span> /&gt;
+</div><div class="hljs-line">            &lt;/div&gt;
+</div><div class="hljs-line">        )
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> <span class="hljs-type">CounterParent</span>
+</div></code></pre>
+
+<p>在src/views目录下，创建Counterson.js  代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs kotlin"><div class="hljs-line"><span class="hljs-keyword">import</span> React,{Component} from <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> store from <span class="hljs-string">'../Store.js'</span> <span class="hljs-comment">//引入仓库</span>
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> Actions from <span class="hljs-string">'../Actions.js'</span>; <span class="hljs-comment">//引入事件 Actions分发事件</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counterson</span> <span class="hljs-title">extends</span> <span class="hljs-title">Component</span> </span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">constructor</span>(props){
+</div><div class="hljs-line">        <span class="hljs-keyword">super</span>(props);
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.newAdd = <span class="hljs-keyword">this</span>.newAdd.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.reduce = <span class="hljs-keyword">this</span>.reduce.bind(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.onChage = <span class="hljs-keyword">this</span>.onChage.bind(<span class="hljs-keyword">this</span>); <span class="hljs-comment">//定义事件方法</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.state=<span class="hljs-keyword">this</span>.getOwnState(); <span class="hljs-comment">//用 getOwnState() 函数  从仓库获取初始值 </span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    getOwnState(){
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>{
+</div><div class="hljs-line">            value:store.getState()[<span class="hljs-keyword">this</span>.props.caption] <span class="hljs-comment">//用getState()方法 从Store仓库拿取state值</span>
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    onChage(){
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.setState(<span class="hljs-keyword">this</span>.getOwnState()) <span class="hljs-comment">//改变的时候重新设置值</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    newAdd(){
+</div><div class="hljs-line">        store.dispatch(Actions.newAdd(<span class="hljs-keyword">this</span>.props.caption))  <span class="hljs-comment">//用dispatch触发事件</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    reduce(){
+</div><div class="hljs-line">        store.dispatch(Actions.reduce(<span class="hljs-keyword">this</span>.props.caption)) <span class="hljs-comment">//减去</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    shouldComponentUpdate(nextProps, nextState) {
+</div><div class="hljs-line">        <span class="hljs-comment">//是react提供了组件生命周期函数，组件在决定重新渲染（虚拟dom比对完毕生成最终的dom后）之前会调用该函数</span>
+</div><div class="hljs-line">        <span class="hljs-comment">//该函数将是否重新渲染的权限交给了开发者，该函数默认直接返回true，表示默认直接出发dom更新</span>
+</div><div class="hljs-line">        <span class="hljs-comment">//这里指当caption或者count发生变化时重新渲染</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span> (nextProps.caption !== <span class="hljs-keyword">this</span>.props.caption) || (nextState.count !== <span class="hljs-keyword">this</span>.state.count);
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    componentDidMount(){
+</div><div class="hljs-line">        <span class="hljs-comment">//React组件的生命周期函数 render之后被调用，并且仅调用一次</span>
+</div><div class="hljs-line">        store.subscribe(<span class="hljs-keyword">this</span>.onChage); <span class="hljs-comment">//注册监听器</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    componentWillUnmount(){
+</div><div class="hljs-line">        <span class="hljs-comment">// React组件的生命周期函数 组件被卸载前调用</span>
+</div><div class="hljs-line">        store.unsubscribe(<span class="hljs-keyword">this</span>.onChage); <span class="hljs-comment">//卸载监听器</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    render(){
+</div><div class="hljs-line">        const {caption} =<span class="hljs-keyword">this</span>.props;
+</div><div class="hljs-line">        const value=<span class="hljs-keyword">this</span>.state.value;
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span>(
+</div><div class="hljs-line">            &lt;div&gt;
+</div><div class="hljs-line">                &lt;button  onClick = {<span class="hljs-keyword">this</span>.newAdd}&gt;+&lt;/button&gt;
+</div><div class="hljs-line">                &lt;button  onClick = {<span class="hljs-keyword">this</span>.reduce}&gt;-&lt;/button&gt;
+</div><div class="hljs-line">                &lt;span&gt;
+</div><div class="hljs-line">                    {caption} Count :{value}
+</div><div class="hljs-line">                &lt;/span&gt;
+</div><div class="hljs-line">            &lt;/div&gt;
+</div><div class="hljs-line">        )
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> Counterson;
+</div></code></pre>
+
+<p>在src/views目录下，创建Summary.js  代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs pf"><div class="hljs-line">import React,{Component} <span class="hljs-keyword">from</span> 'react';
+</div><div class="hljs-line">import store <span class="hljs-keyword">from</span> '../Store.js';
+</div><div class="hljs-line">class Summary extends Component{
+</div><div class="hljs-line">    constructor(props){
+</div><div class="hljs-line">        super(props);
+</div><div class="hljs-line">        this.<span class="hljs-keyword">on</span>Change=this.<span class="hljs-keyword">on</span>Change.bind(this);
+</div><div class="hljs-line">        this.<span class="hljs-keyword">state</span>=this.getOwnState();
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    <span class="hljs-keyword">on</span>Change(){
+</div><div class="hljs-line">        this.<span class="hljs-built_in">set</span>State(this.getOwnState())
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    getOwnState(){
+</div><div class="hljs-line">        const <span class="hljs-keyword">state</span>=store.getState();
+</div><div class="hljs-line">        let sum=<span class="hljs-number">0</span>;
+</div><div class="hljs-line">        <span class="hljs-keyword">for</span>(const key <span class="hljs-keyword">in</span> <span class="hljs-keyword">state</span>){
+</div><div class="hljs-line">            if(<span class="hljs-keyword">state</span>.hasOwnProperty(key)){
+</div><div class="hljs-line">                sum +=<span class="hljs-keyword">state</span>[key];
+</div><div class="hljs-line">            }
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">        return {sum:sum};
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    shouldComponentUpdate(nextProps,nextState){
+</div><div class="hljs-line">        return nextState.sum!==this.<span class="hljs-keyword">state</span>.sum;
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    componentDidMount(){
+</div><div class="hljs-line">        store.subscribe(this.<span class="hljs-keyword">on</span>Change)
+</div><div class="hljs-line">        //添加一个变化监听器，每当 dispatch action 的时候就会执行，<span class="hljs-keyword">state</span> 树中的一部分可能已经变化。
+</div><div class="hljs-line">        //你可以在回调函数里调用 getState() 来拿到当前 <span class="hljs-keyword">state</span>。函数返回一个解绑的函数。
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    componentWillUnmount(){
+</div><div class="hljs-line">        store.unsubscribe(this.<span class="hljs-keyword">on</span>Change)
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    render(){
+</div><div class="hljs-line">        const sum = this.<span class="hljs-keyword">state</span>.sum;
+</div><div class="hljs-line">        return(
+</div><div class="hljs-line">            <span class="hljs-variable">&lt;div&gt;</span>Total Count:{sum}&lt;/div&gt;
+</div><div class="hljs-line">        )
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">export <span class="hljs-keyword">default</span> Summary;
+</div></code></pre>
+
+<p>在src目录的index.js文件中注册，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs coffeescript"><div class="hljs-line"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">import</span> CounterParent <span class="hljs-keyword">from</span> <span class="hljs-string">"./views/CounterParent"</span>
+</div><div class="hljs-line">ReactDOM.render(&lt;CounterParent /&gt;, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'root'</span>));
+</div></code></pre></div></body></html>

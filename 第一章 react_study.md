@@ -46,7 +46,47 @@ npm start 启动项目（在package.json 中 scripts 里查看）
 
 //这个应用所做的事情，只是渲染一个名字叫做App的组件，App组件在同目录下的App.js文件中定义
 ```
-#### **5.增加一个新的React组件**
+#### **5.React的生命周期函数**
+在ES6中，一个React组件是用一个class来表示的，代码如下：
+
+```
+// 定义一个TodoList的React组件，通过继承React.Component来实现
+class TodoList extends React.Component {
+  ...
+}
+```
+生命周期函数如下：
+
+```
+constructor(props, context) 
+//构造函数，在创建组件的时候调用一次。
+componentWillMount() 
+//在组件挂载之前调用一次。如果在这个函数里面调用setState，本次的render函数可以看到更新后的state，并且只渲染一次。
+render()
+//render是一个React组件所必不可少的核心函数（上面的其它函数都不是必须的）。记住，不要在render里面修改state。
+componentDidMount()
+//在组件挂载之后调用一次。这个时候，子主键也都挂载好了，可以在这里使用refs。
+componentWillReceiveProps(nextProps)
+//props是父组件传递给子组件的。父组件发生render的时候子组件就会调用
+//componentWillReceiveProps（不管props有没有更新，也不管父子组件之间有没有数据交换）
+shouldComponentUpdate(nextProps, nextState)
+//组件挂载之后，每次调用setState后都会调用shouldComponentUpdate判断是否需要重新渲染组件。默认返回true
+//需要重新render。在比较复杂的应用里，有一些数据的改变并不影响界面展示，可以在这里做判断，优化渲染效率。
+componentWillUpdate(nextProps, nextState)
+//shouldComponentUpdate返回true或者调用forceUpdate之后，componentWillUpdate会被调用。
+componentDidUpdate()
+//除了首次render之后调用componentDidMount，其它render结束之后都是调用componentDidUpdate。
+//componentWillMount、componentDidMount和componentWillUpdate、componentDidUpdate可以对应起来。
+//区别在于，前者只有在挂载的时候会被调用；而后者在以后的每次更新渲染之后都会被调用。
+componentWillUnmount()
+//组件被卸载的时候调用。一般在componentDidMount里面注册的事件需要在这里删除。
+
+//详情请了解：
+//https://www.jianshu.com/p/4784216b8194
+//https://blog.csdn.net/zrcj0706/article/details/78608740
+```
+
+#### **6.增加一个新的React组件**
 ```
    功能：定义一个能够点击计算增加减少数的组件
 ```
@@ -93,8 +133,8 @@ import './index.css';
 import ClickCounter from './ClickCounter'
 ReactDOM.render(<ClickCounter />, document.getElementById('root'));
 ```
-#### **6.组件之间的传值**
- **6.1 父传子**（用props接收）
+#### **7.组件之间的传值**
+ **7.1 父传子**（用props接收）
 ```
 功能：点击任何一个Counter的 + 或者 - 按钮 ，实现对应的Counter的计数变化
 ```
@@ -173,7 +213,7 @@ import './index.css';
 import CounterPanel from "./CounterPanel"
 ReactDOM.render(<CounterPanel />, document.getElementById('root'));
 ```
- **6.2 子传父**（子组件用函数形式返回，父组件用函数调用以及接收）
+ **7.2 子传父**（子组件用函数形式返回，父组件用函数调用以及接收）
 ```
  功能：点击任何一个Counter的 + 或者 - 按钮，除了可以看见数值的变化外，底部的总计数也会随之变化
 ```
@@ -263,7 +303,7 @@ import './index.css';
 import CounterPanel from "./CounterPanel"
 ReactDOM.render(<CounterPanel />, document.getElementById('root'));
 ```
-#### **7. React-Router 路由**
+#### **8. React-Router 路由**
      
 
  **首先 npm i react-router --save-dev   下载到生产环境**

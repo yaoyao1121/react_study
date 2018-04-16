@@ -68,7 +68,53 @@
 
 
 
-<h4 id="5增加一个新的react组件"><strong>5.增加一个新的React组件</strong></h4>
+<h4 id="5react的生命周期函数"><strong>5.React的生命周期函数</strong></h4>
+
+<p>在ES6中，一个React组件是用一个class来表示的，代码如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs scala"><div class="hljs-line"><span class="hljs-comment">// 定义一个TodoList的React组件，通过继承React.Component来实现</span>
+</div><div class="hljs-line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TodoList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+</div><div class="hljs-line">  ...
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<p>生命周期函数如下：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs stylus"><div class="hljs-line"><span class="hljs-function"><span class="hljs-title">constructor</span><span class="hljs-params">(props, context)</span></span> 
+</div><div class="hljs-line"><span class="hljs-comment">//构造函数，在创建组件的时候调用一次。</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-title">componentWillMount</span><span class="hljs-params">()</span></span> 
+</div><div class="hljs-line"><span class="hljs-comment">//在组件挂载之前调用一次。如果在这个函数里面调用setState，本次的render函数可以看到更新后的state，并且只渲染一次。</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-title">render</span><span class="hljs-params">()</span></span>
+</div><div class="hljs-line"><span class="hljs-comment">//render是一个React组件所必不可少的核心函数（上面的其它函数都不是必须的）。记住，不要在render里面修改state。</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-title">componentDidMount</span><span class="hljs-params">()</span></span>
+</div><div class="hljs-line"><span class="hljs-comment">//在组件挂载之后调用一次。这个时候，子主键也都挂载好了，可以在这里使用refs。</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-title">componentWillReceiveProps</span><span class="hljs-params">(nextProps)</span></span>
+</div><div class="hljs-line"><span class="hljs-comment">//props是父组件传递给子组件的。父组件发生render的时候子组件就会调用</span>
+</div><div class="hljs-line"><span class="hljs-comment">//componentWillReceiveProps（不管props有没有更新，也不管父子组件之间有没有数据交换）</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-title">shouldComponentUpdate</span><span class="hljs-params">(nextProps, nextState)</span></span>
+</div><div class="hljs-line"><span class="hljs-comment">//组件挂载之后，每次调用setState后都会调用shouldComponentUpdate判断是否需要重新渲染组件。默认返回true</span>
+</div><div class="hljs-line"><span class="hljs-comment">//需要重新render。在比较复杂的应用里，有一些数据的改变并不影响界面展示，可以在这里做判断，优化渲染效率。</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-title">componentWillUpdate</span><span class="hljs-params">(nextProps, nextState)</span></span>
+</div><div class="hljs-line"><span class="hljs-comment">//shouldComponentUpdate返回true或者调用forceUpdate之后，componentWillUpdate会被调用。</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-title">componentDidUpdate</span><span class="hljs-params">()</span></span>
+</div><div class="hljs-line"><span class="hljs-comment">//除了首次render之后调用componentDidMount，其它render结束之后都是调用componentDidUpdate。</span>
+</div><div class="hljs-line"><span class="hljs-comment">//componentWillMount、componentDidMount和componentWillUpdate、componentDidUpdate可以对应起来。</span>
+</div><div class="hljs-line"><span class="hljs-comment">//区别在于，前者只有在挂载的时候会被调用；而后者在以后的每次更新渲染之后都会被调用。</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-title">componentWillUnmount</span><span class="hljs-params">()</span></span>
+</div><div class="hljs-line"><span class="hljs-comment">//组件被卸载的时候调用。一般在componentDidMount里面注册的事件需要在这里删除。</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//详情请了解：</span>
+</div><div class="hljs-line"><span class="hljs-comment">//https://www.jianshu.com/p/4784216b8194</span>
+</div><div class="hljs-line"><span class="hljs-comment">//https://blog.csdn.net/zrcj0706/article/details/78608740</span>
+</div></code></pre>
+
+
+
+<h4 id="6增加一个新的react组件"><strong>6.增加一个新的React组件</strong></h4>
 
 
 
@@ -124,9 +170,9 @@
 
 
 
-<h4 id="6组件之间的传值"><strong>6.组件之间的传值</strong></h4>
+<h4 id="7组件之间的传值"><strong>7.组件之间的传值</strong></h4>
 
-<p><strong>6.1 父传子</strong>（用props接收）</p>
+<p><strong>7.1 父传子</strong>（用props接收）</p>
 
 
 
@@ -215,7 +261,7 @@
 </div><div class="hljs-line">ReactDOM.render(&lt;CounterPanel /&gt;, <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'root'</span>));
 </div></code></pre>
 
-<p><strong>6.2 子传父</strong>（子组件用函数形式返回，父组件用函数调用以及接收）</p>
+<p><strong>7.2 子传父</strong>（子组件用函数形式返回，父组件用函数调用以及接收）</p>
 
 
 
@@ -317,7 +363,7 @@
 
 
 
-<h4 id="7-react-router-路由"><strong>7. React-Router 路由</strong></h4>
+<h4 id="8-react-router-路由"><strong>8. React-Router 路由</strong></h4>
 
 <p><strong>首先 npm i react-router –save-dev   下载到生产环境</strong></p>
 

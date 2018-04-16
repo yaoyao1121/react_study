@@ -63,4 +63,14 @@ class Routes extends Component{
 }
 export default Routes;
 ```
+在src目录的index.js文件中注册，代码如下：
+
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Routes from "./Routes.js"
+
+ReactDOM.render(<Routes />, document.getElementById('root'));
+```
+
 更多路由详情清查看  https://blog.csdn.net/haoshidai/article/details/52755193
