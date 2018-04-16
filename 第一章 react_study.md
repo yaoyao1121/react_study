@@ -1,6 +1,7 @@
 #  第一章 通过create-react-app新建react项目
 
    **首先，要确认已经安装了nodejs和npm**
+   https://blog.csdn.net/haoshidai/article/details/52244620    React.js中常用的ES6写法总结
   
 
 #### **1.设置开发环境**
