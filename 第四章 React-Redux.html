@@ -1,0 +1,37 @@
+<!DOCTYPE html><html><head><title>第四章 React-Redux</title><meta charset='utf-8'><link href='https://dn-maxiang.qbox.me/res-min/themes/marxico.css' rel='stylesheet'><style></style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+<h1 id="第四章-react-redux">第四章 React-Redux</h1>
+
+
+
+<h4 id="1组件context">1.组件Context</h4>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs vhdl"><div class="hljs-line">概念：<span class="hljs-keyword">Context</span>是react提供的实现上下文传值的组件。让一个树状组件上所有组件都能访问一个共同的对象，为了完成这个任务，需要上级组件和下级组件配合。
+</div><div class="hljs-line">    首先，上级组件要宣称自己支持<span class="hljs-keyword">context</span>，并且提供一个函数来返回代表<span class="hljs-keyword">Context</span>的对象。
+</div><div class="hljs-line">    然后，这个上级组件之下的所有子孙组件，只要宣称自己需要这个<span class="hljs-keyword">context</span>，就可以通过this.<span class="hljs-keyword">context</span>访问到这个共同的环境对象。
+</div><div class="hljs-line"><wbr>
+</div></code></pre>
+
+<p>注意，React Context 也有一些局限性：</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs mipsasm"><div class="hljs-line"><span class="hljs-number">1</span>.React <span class="hljs-built_in">Context</span> 目前在 React 在是一个 experimental feature，在未来的版本中会有变化说不定，这点官方文档有说明。
+</div><div class="hljs-line"><span class="hljs-number">2</span>.在组件树中，如果中间某一个组件 <span class="hljs-keyword">ShouldComponentUpdate </span>returning false 了，会阻碍 <span class="hljs-built_in">context</span> 的正常传值，导致子组件无法获取更新。
+</div><div class="hljs-line"><span class="hljs-number">3</span>.组件本身 <span class="hljs-keyword">extends </span>React.PureComponent 也会阻碍 <span class="hljs-built_in">context</span> 的更新。
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">解决 <span class="hljs-keyword">ShouldComponentUpdate </span>与 <span class="hljs-built_in">Context</span> 之间冲突的方案也是有的，例如使用 Redux 或者 Mobx 等全局单一状态管理。这里抛砖引玉，介绍一种简单的解决 <span class="hljs-built_in">Context</span> 不起作用的方法，它必须满足两个条件：
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-number">1</span>.Context 应该是唯一不可变的
+</div><div class="hljs-line"><span class="hljs-number">2</span>.组件只在初始化的时候去获取 <span class="hljs-built_in">Context</span>
+</div></code></pre>
+
+
+
+<h4 id="2组件context案例">2.组件Context案例</h4></div></body></html>
